@@ -1,0 +1,3 @@
+PASS: avvio WinForms, scansione, piano preselezionato, copia dal flusso UI, seconda scansione senza copie.
+Fixture: %TEMP%\Apposto-UI-63e2b0165a3b40459b5803bc956f3c06
+2026-10-16T21:55:38.9362706+02:00

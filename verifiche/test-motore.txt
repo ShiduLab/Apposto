@@ -1,0 +1,31 @@
+PASS nuovi automatici
+PASS aggiornati ricorsivi
+PASS hash ignora solo metadata
+PASS conflitti e clone recente protetti
+PASS solo clone conservato
+PASS piano preselezionato
+PASS gerarchia e contenuto
+PASS versione precedente nello storico
+PASS nessuna sovrascrittura conflitti
+PASS nessuna cancellazione
+PASS seconda scansione senza copie
+PASS destinazione dentro origine rifiutata
+PASS piano obsoleto non sovrascrive
+PASS annullamento prima della copia
+PASS file non leggibile isolato
+PASS nessun parziale visibile
+PASS timestamp preservato
+PASS origine cambiata blocca piano
+PASS annullamento durante copia conserva originale
+PASS temporaneo rimosso dopo annullamento
+PASS rapido presume uguaglianza data e dimensione
+PASS collisione directory contro file
+PASS disco o cartella assente rifiutato
+PASS identita volume Windows disponibile
+PASS coppie salvate e ricaricate
+PASS volume corrente riconosciuto
+PASS volume diverso non accettato
+PASS fixture junction creata
+PASS junction non seguita
+PASS radice annidata con alias 8.3 rifiutata
+TOTALE 30 verifiche superate. Fixture: %TEMP%\Apposto-test-e5b34ee837f84b1a9ed059ff8f1fd13e
