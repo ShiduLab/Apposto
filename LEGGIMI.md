@@ -6,7 +6,7 @@ App desktop Windows portatile, in italiano, senza installazione. Avvia `Apposto.
 
 ## Uso
 
-1. Scegli una cartella origine e una cartella clone gia esistente. Dai un nome alla coppia e premi Salva coppia.
+1. Premi Sfoglia... per aprire Questo PC e scegliere un disco intero o una cartella per Origine e Destinazione. Sono ammesse unita locali, esterne o altri percorsi disponibili, senza vincolo USB. La destinazione deve esistere. Dai un nome alla coppia e premi Salva coppia.
 2. Premi Analizza. Ai successivi avvii puoi richiamare la coppia dal menu: avvia anche l'analisi.
 3. Controlla l'anteprima. Nuovi e aggiornati sono gia tutti selezionati, anche in sottocartelle diverse. Puoi deselezionarli. Premi APPOSTO! per avviare la copia predisposta.
 

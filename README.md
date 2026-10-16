@@ -10,7 +10,7 @@
 
 La foto della postazione ShiduLab accompagna Apposto anche nell'intestazione e nell'icona Windows, ricavata dalla stessa immagine in sette dimensioni.
 
-Hai una cartella sul PC. Sul disco esterno ne hai una copia. Nel frattempo hai scritto, corretto, aggiunto file in venti sottocartelle diverse.
+Hai una cartella sul PC. In un altro disco o in un'altra cartella ne hai una copia. Nel frattempo hai scritto, corretto, aggiunto file in venti sottocartelle diverse.
 
 Apposto nasce per togliere di mezzo una domanda noiosa: quali file devo portare dall'altra parte?
 
@@ -35,7 +35,7 @@ Il flusso segue una direzione: **origine > clone**. I file presenti soltanto nel
 
 ## Prima guardi. Poi metti a posto.
 
-1. Scegli le due cartelle e salva la coppia con un nome.
+1. Premi Sfoglia...: si apre Questo PC, dove puoi scegliere un disco intero o una cartella per Origine e Destinazione. Salva la coppia con un nome.
 2. Analizza, oppure richiama una coppia gia salvata.
 3. Guarda nuovi, aggiornati, uguali, file solo destinazione, conflitti ed errori.
 4. Premi **APPOSTO!** per copiare tutti i file predisposti.
