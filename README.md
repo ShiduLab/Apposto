@@ -1,6 +1,6 @@
 <img src="assets/Apposto-icon.png" width="72" height="72" alt="Icona Windows di Apposto">
 
-# Apposto
+# Apposto!
 
 ### Il tuo clone, a posto.
 
@@ -8,7 +8,9 @@
 
 [Scarica la versione portatile](https://github.com/ShiduLab/Apposto/releases/latest) · [Guida e protezioni](LEGGIMI.md) · [Rapporti di prova](verifiche)
 
-![Apposto 0.1.0: interfaccia con Origine, Destinazione e Sfoglia da Questo PC](verifiche/Apposto-v0.1.0.png)
+![Apposto!: esempio da Documenti a D:\Documenti](verifiche/Apposto-Documenti-titolo.png)
+
+Schermata dimostrativa: origine **Documenti**, destinazione **D:\Documenti**.
 
 La foto della postazione ShiduLab accompagna Apposto nell'intestazione e nell'icona Windows, ricavata dalla stessa immagine in sette dimensioni.
 
