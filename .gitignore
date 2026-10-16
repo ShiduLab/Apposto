@@ -1,0 +1,7 @@
+Dati/
+*.apposto-tmp
+*.tmp
+*.pdb
+.vs/
+obj/
+bin/
