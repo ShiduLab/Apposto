@@ -1,3 +1,5 @@
+<img src="assets/Apposto-icon.png" width="72" height="72" alt="Icona Windows di Apposto">
+
 # Apposto
 
 ### Il tuo clone, a posto.
@@ -6,9 +8,9 @@
 
 [Scarica la versione portatile](https://github.com/ShiduLab/Apposto/releases/latest) · [Guida e protezioni](LEGGIMI.md) · [Rapporti di prova](verifiche)
 
-![La postazione ShiduLab](assets/DeskSardTab.jpg)
+![Apposto 0.1.0: interfaccia con Origine, Destinazione e Sfoglia da Questo PC](verifiche/Apposto-v0.1.0.png)
 
-La foto della postazione ShiduLab accompagna Apposto anche nell'intestazione e nell'icona Windows, ricavata dalla stessa immagine in sette dimensioni.
+La foto della postazione ShiduLab accompagna Apposto nell'intestazione e nell'icona Windows, ricavata dalla stessa immagine in sette dimensioni.
 
 Hai una cartella sul PC. In un altro disco o in un'altra cartella ne hai una copia. Nel frattempo hai scritto, corretto, aggiunto file in venti sottocartelle diverse.
 
@@ -18,7 +20,12 @@ Gli indichi una volta l'origine e il clone. Lui percorre gli alberi, confronta i
 
 La parte soffice e questa: meno caccia ai file, meno gesti ripetuti, piu attenzione a quello che stavi facendo.
 
-![Anteprima di Apposto](verifiche/Apposto-anteprima.png)
+<details>
+<summary>La foto originale della postazione ShiduLab</summary>
+
+![La postazione ShiduLab](assets/DeskSardTab.jpg)
+
+</details>
 
 ## Un compito preciso
 
