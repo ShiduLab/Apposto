@@ -28,4 +28,4 @@ PASS volume diverso non accettato
 PASS fixture junction creata
 PASS junction non seguita
 PASS radice annidata con alias 8.3 rifiutata
-TOTALE 30 verifiche superate. Fixture: %TEMP%\Apposto-test-2147c84e449b47bfa7f4899c5e3bfc4c
+TOTALE 30 verifiche superate. Fixture: %TEMP%\Apposto-test-3c1df00ba78843808f64c9992ab82afd

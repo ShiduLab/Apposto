@@ -1,3 +1,3 @@
-PASS: foto e icona incorporate, avvio WinForms, scansione, piano preselezionato, copia dal flusso UI, seconda scansione senza copie.
-Fixture: %TEMP%\Apposto-UI-988cf2f7a4414e1f81ce2c00f8346541
-2026-10-16T22:04:17.0936669+02:00
+PASS: avvio WinForms, scansione, piano preselezionato, copia dal flusso UI, seconda scansione senza copie.
+Fixture: %TEMP%\Apposto-UI-21e31977fc9b49439a7c6bdabe6d6e8f
+2026-10-16T22:10:35.4496852+02:00
