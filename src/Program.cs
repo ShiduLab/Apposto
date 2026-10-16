@@ -1,0 +1,70 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Diagnostics;
+namespace Apposto {
+ class MainForm:Form {
+  TextBox source=new TextBox(),destination=new TextBox(),name=new TextBox();
+  ComboBox pairs=new ComboBox();CheckBox deep=new CheckBox();ListView list=new ListView();
+  Label status=new Label(),summary=new Label();ProgressBar bar=new ProgressBar();
+  Button scan=new Button(),apply=new Button(),stop=new Button();
+  List<Entry> plan=new List<Entry>();List<Pair> saved=new List<Pair>();List<Control> locked=new List<Control>();
+  volatile bool cancelled;bool busy,rendering;string scanSource,scanDestination,sourceVolume,destinationVolume;
+  string logPath;DateTime lastProgress=DateTime.MinValue;
+  Color bg=Color.FromArgb(24,27,34),panel=Color.FromArgb(36,41,51),ink=Color.FromArgb(235,239,246),accent=Color.FromArgb(128,225,195);
+  public MainForm(){
+   Text="Apposto | ShiduLab SofficiWare";MinimumSize=new Size(880,630);Size=new Size(1120,780);StartPosition=FormStartPosition.CenterScreen;BackColor=bg;ForeColor=ink;Font=new Font("Segoe UI",10);AutoScaleMode=AutoScaleMode.Dpi;
+   var layout=new TableLayoutPanel{Dock=DockStyle.Fill,Padding=new Padding(22),ColumnCount=1,RowCount=8};
+   foreach(int h in new[]{70,40,44,44,44,58})layout.RowStyles.Add(new RowStyle(SizeType.Absolute,h));layout.RowStyles.Add(new RowStyle(SizeType.Percent,100));layout.RowStyles.Add(new RowStyle(SizeType.Absolute,76));Controls.Add(layout);
+   var head=new FlowLayoutPanel{Dock=DockStyle.Fill};head.Controls.Add(new Label{Text="Apposto",Font=new Font("Segoe UI",26,FontStyle.Bold),AutoSize=true,ForeColor=accent});head.Controls.Add(new Label{Text="ShiduLab SofficiWare\nIl tuo clone, a posto.",AutoSize=true,Margin=new Padding(20,12,0,0)});layout.Controls.Add(head);
+   var profiles=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=5};profiles.RowCount=1;profiles.RowStyles.Add(new RowStyle(SizeType.Percent,100));profiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,90));profiles.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,55));profiles.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,45));profiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,115));profiles.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,110));
+   profiles.Controls.Add(new Label{Text="Coppia",Dock=DockStyle.Fill,TextAlign=ContentAlignment.MiddleLeft});pairs.DropDownStyle=ComboBoxStyle.DropDownList;pairs.Dock=DockStyle.Fill;profiles.Controls.Add(pairs);name.Dock=DockStyle.Fill;name.Text="La mia coppia";profiles.Controls.Add(name);
+   var save=Button("Salva coppia",SavePair);var remove=Button("Rimuovi",RemovePair);profiles.Controls.Add(save);profiles.Controls.Add(remove);layout.Controls.Add(profiles);locked.AddRange(new Control[]{pairs,name,save,remove});
+   layout.Controls.Add(PathRow("Origine PC",source));layout.Controls.Add(PathRow("Clone USB",destination));
+   var options=new FlowLayoutPanel{Dock=DockStyle.Fill};deep.Text="Verifica approfondita SHA-256";deep.Checked=false;deep.AutoSize=true;options.Controls.Add(deep);options.Controls.Add(new Label{Text="Solo origine > clone. Conflitti esclusi. Nessuna cancellazione.",AutoSize=true,Margin=new Padding(16,5,0,0)});layout.Controls.Add(options);locked.Add(deep);
+   var actions=new FlowLayoutPanel{Dock=DockStyle.Fill};scan.Text="1. Analizza";scan.Width=145;scan.Click+=async(o,e)=>await Scan();apply.Text="APPOSTO!";apply.Width=210;apply.BackColor=accent;apply.ForeColor=bg;apply.Font=new Font(Font,FontStyle.Bold);apply.Enabled=false;apply.Click+=async(o,e)=>await Copy();stop.Text="Annulla";stop.Enabled=false;stop.Width=110;stop.Click+=(o,e)=>{cancelled=true;status.Text="Annullamento in corso...";};
+   foreach(var b in new[]{scan,apply,stop}){b.Height=42;b.FlatStyle=FlatStyle.Flat;actions.Controls.Add(b);}actions.Controls.Add(Button("Apri log",(o,e)=>{try{Directory.CreateDirectory(Path.Combine(Profiles.Data,"Log"));Process.Start("explorer.exe",Path.Combine(Profiles.Data,"Log"));}catch(Exception ex){Error(ex);}}));layout.Controls.Add(actions);
+   list.Dock=DockStyle.Fill;list.View=View.Details;list.CheckBoxes=true;list.FullRowSelect=true;list.GridLines=false;list.BackColor=panel;list.ForeColor=ink;list.BorderStyle=BorderStyle.None;list.Columns.Add("Stato",155);list.Columns.Add("Percorso relativo",340);list.Columns.Add("Dettaglio",480);
+   list.ItemCheck+=(o,e)=>{if(!rendering&&((busy)||!((Entry)list.Items[e.Index].Tag).Copyable))e.NewValue=e.CurrentValue;else if(!rendering)((Entry)list.Items[e.Index].Tag).Selected=e.NewValue==CheckState.Checked;};layout.Controls.Add(list);
+   var foot=new TableLayoutPanel{Dock=DockStyle.Fill,RowCount=3};foot.RowStyles.Add(new RowStyle(SizeType.Absolute,25));foot.RowStyles.Add(new RowStyle(SizeType.Absolute,25));foot.RowStyles.Add(new RowStyle(SizeType.Absolute,12));summary.Dock=DockStyle.Fill;summary.Text="Scegli le due cartelle, salva la coppia e analizza.";status.Dock=DockStyle.Fill;status.AutoEllipsis=true;bar.Dock=DockStyle.Fill;foot.Controls.Add(summary);foot.Controls.Add(status);foot.Controls.Add(bar);layout.Controls.Add(foot);
+   pairs.SelectedIndexChanged+=async(o,e)=>{if(pairs.SelectedIndex<0)return;try{var p=saved[pairs.SelectedIndex];name.Text=p.Name;source.Text=Profiles.Resolve(p.Source,p.SourceVolume);destination.Text=Profiles.Resolve(p.Destination,p.DestinationVolume);await Scan();}catch(Exception ex){InvalidatePlan();Error(ex);}};
+   source.TextChanged+=(o,e)=>InvalidatePlan();destination.TextChanged+=(o,e)=>InvalidatePlan();deep.CheckedChanged+=(o,e)=>InvalidatePlan();
+   try{saved=Profiles.Load();RefreshPairs();}catch(Exception ex){Error(new IOException("Impossibile leggere coppie.xml. Il file viene conservato. "+ex.Message));}
+   FormClosing+=(o,e)=>{if(busy){cancelled=true;e.Cancel=true;status.Text="Attendi la conclusione dell'annullamento prima di chiudere.";}};
+  }
+  Button Button(string text,EventHandler click){var b=new Button{Text=text,Dock=DockStyle.Fill,AutoSize=true,FlatStyle=FlatStyle.Flat,BackColor=panel,ForeColor=ink,Height=34};b.Click+=click;return b;}
+  Control PathRow(string label,TextBox field){var row=new TableLayoutPanel{Dock=DockStyle.Fill,ColumnCount=3};row.RowCount=1;row.RowStyles.Add(new RowStyle(SizeType.Percent,100));row.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,90));row.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));row.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,110));row.Controls.Add(new Label{Text=label,Dock=DockStyle.Fill,TextAlign=ContentAlignment.MiddleLeft});field.Dock=DockStyle.Fill;field.BackColor=panel;field.ForeColor=ink;row.Controls.Add(field);var browse=Button("Scegli...",(o,e)=>{using(var dialog=new FolderBrowserDialog{Description=label,SelectedPath=field.Text})if(dialog.ShowDialog(this)==DialogResult.OK)field.Text=dialog.SelectedPath;});row.Controls.Add(browse);locked.Add(field);locked.Add(browse);return row;}
+  void RefreshPairs(){pairs.Items.Clear();foreach(var p in saved)pairs.Items.Add(p);}
+  void SavePair(object o,EventArgs e){try{Engine.Validate(source.Text,destination.Text);if(String.IsNullOrWhiteSpace(name.Text))throw new IOException("Dai un nome alla coppia.");var p=new Pair{Name=name.Text.Trim(),Source=Path.GetFullPath(source.Text),Destination=Path.GetFullPath(destination.Text),SourceVolume=Profiles.Volume(source.Text),DestinationVolume=Profiles.Volume(destination.Text)};var next=saved.Where(x=>x.Name!=p.Name).ToList();next.Add(p);Profiles.Save(next);saved=next;RefreshPairs();status.Text="Coppia salvata. Potrai richiamarla al prossimo avvio.";}catch(Exception ex){Error(ex);}}
+  void RemovePair(object o,EventArgs e){if(pairs.SelectedIndex<0)return;try{var next=new List<Pair>(saved);next.RemoveAt(pairs.SelectedIndex);Profiles.Save(next);saved=next;RefreshPairs();}catch(Exception ex){Error(ex);}}
+  void Error(Exception e){status.Text=e.Message;MessageBox.Show(this,e.Message,"Apposto",MessageBoxButtons.OK,MessageBoxIcon.Warning);}
+  void InvalidatePlan(){if(busy)return;plan.Clear();list.Items.Clear();apply.Enabled=false;summary.Text="Analizza per preparare il piano aggiornato.";}
+  void Busy(bool value){busy=value;foreach(var c in locked)c.Enabled=!value;scan.Enabled=!value;stop.Enabled=value;apply.Enabled=!value&&plan.Any(x=>x.Copyable&&x.Selected);bar.Style=value?ProgressBarStyle.Marquee:ProgressBarStyle.Blocks;}
+  void Render(){rendering=true;list.BeginUpdate();list.Items.Clear();foreach(var e in plan){var item=new ListViewItem(new[]{e.State,e.Relative,e.Detail??""}){Tag=e,Checked=e.Selected};if(e.State=="Conflitto"||e.State.Contains("Errore")||e.State=="Non leggibile")item.ForeColor=Color.FromArgb(255,184,147);else if(e.Copyable||e.State=="Copiato")item.ForeColor=accent;list.Items.Add(item);}list.EndUpdate();rendering=false;summary.Text=String.Join(" | ",plan.GroupBy(x=>x.State).Select(g=>g.Key+": "+g.Count()).ToArray());}
+  void Progress(string text){if((DateTime.UtcNow-lastProgress).TotalMilliseconds<100)return;lastProgress=DateTime.UtcNow;BeginInvoke((Action)(()=>status.Text=text));}
+  async Task Scan(){if(busy)return;InvalidatePlan();cancelled=false;Busy(true);string s=source.Text,d=destination.Text;bool hash=deep.Checked;try{
+    var result=await Task.Run(()=>Engine.Scan(s,d,hash,()=>cancelled,Progress));plan=result;scanSource=Path.GetFullPath(s);scanDestination=Path.GetFullPath(d);sourceVolume=Profiles.Volume(s);destinationVolume=Profiles.Volume(d);Render();status.Text="Anteprima pronta. I file copiabili sono gia selezionati. APPOSTO! avvia la copia.";
+   }catch(OperationCanceledException){status.Text="Analisi annullata.";}catch(Exception ex){Error(ex);}finally{Busy(false);}}
+  async Task Copy(){if(busy||!plan.Any(x=>x.Copyable&&x.Selected))return;cancelled=false;Busy(true);try{
+    if(Profiles.Resolve(scanSource,sourceVolume)!=scanSource||Profiles.Resolve(scanDestination,destinationVolume)!=scanDestination)throw new IOException("Lettera del disco cambiata. Richiama la coppia e ripeti l'analisi.");
+    Directory.CreateDirectory(Path.Combine(Profiles.Data,"Log"));logPath=Path.Combine(Profiles.Data,"Log",DateTime.Now.ToString("yyyyMMdd-HHmmss")+"-"+Guid.NewGuid().ToString("N").Substring(0,6)+".txt");
+    await Task.Run(()=>{using(var log=new StreamWriter(logPath)){log.AutoFlush=true;log.WriteLine("Apposto | ShiduLab SofficiWare | "+DateTime.Now.ToString("O"));log.WriteLine("Origine: "+scanSource+"\nClone: "+scanDestination);foreach(var e in plan)log.WriteLine("PIANO | "+e.State+" | "+e.Relative+" | selezionato="+e.Selected);Engine.Apply(scanSource,scanDestination,plan,()=>cancelled,t=>{log.WriteLine(DateTime.Now.ToString("O")+" | "+t);Progress(t);});foreach(var e in plan)log.WriteLine("ESITO | "+e.State+" | "+e.Relative+" | "+e.Detail);log.WriteLine(cancelled?"ANNULLATO":"FINE");}});
+    Render();status.Text=(cancelled?"Operazione annullata. ":"Operazione terminata. ")+"Log salvato. Ripeti Analizza per verificare il clone.";
+   }catch(Exception ex){Error(ex);}finally{Busy(false);apply.Enabled=false;}}
+  static void CheckLayout(Control c){foreach(Control child in c.Controls){if(c is TableLayoutPanel && child.Height>c.ClientSize.Height)throw new Exception("Controllo ritagliato: "+child.Text);CheckLayout(child);}} public async Task Smoke(string output){
+   string root=Path.Combine(Path.GetTempPath(),"Apposto-UI-"+Guid.NewGuid().ToString("N"));string s=Path.Combine(root,"PC"),d=Path.Combine(root,"USB");Directory.CreateDirectory(s);Directory.CreateDirectory(d);Directory.CreateDirectory(Path.Combine(s,"Testi"));File.WriteAllText(Path.Combine(s,"Testi","prova.txt"),"Apposto UI test");
+   source.Text=s;destination.Text=d;deep.Checked=true;await Scan();
+   if(!apply.Enabled||list.Items.Count!=1||!list.Items[0].Checked)throw new Exception("UI: piano non predisposto");
+   await Task.Delay(250); CheckLayout(this); using(var picture=new Bitmap(Width,Height)){DrawToBitmap(picture,new Rectangle(0,0,Width,Height));picture.Save(Path.Combine(output,"Apposto-anteprima.png"));}
+   await Copy();if(File.ReadAllText(Path.Combine(d,"Testi","prova.txt"))!="Apposto UI test")throw new Exception("UI: copia fallita");await Scan();if(apply.Enabled||plan.Any(x=>x.Copyable))throw new Exception("UI: seconda scansione errata");
+   File.WriteAllText(Path.Combine(output,"UI-test.txt"),"PASS: avvio WinForms, scansione, piano preselezionato, copia dal flusso UI, seconda scansione senza copie.\r\nFixture: "+root+"\r\n"+DateTime.Now.ToString("O"));
+  }
+ }
+ static class Program {
+  [STAThread]static void Main(string[] args){Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);var form=new MainForm();if(args.Length==2&&args[0]=="--smoke-test"){form.Shown+=async(o,e)=>{try{await form.Smoke(args[1]);}catch(Exception ex){File.WriteAllText(Path.Combine(args[1],"UI-test.txt"),"FAIL: "+ex);Environment.ExitCode=1;}finally{form.Close();}};}Application.Run(form);}
+ }
+}
