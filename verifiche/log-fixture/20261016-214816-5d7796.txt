@@ -1,0 +1,8 @@
+Apposto | ShiduLab SofficiWare | 2026-10-16T21:48:16.3382552+02:00
+Origine: %TEMP%\Apposto-UI-f55ad6afbb304224b65a2a95b00d8e4a\PC
+Clone: %TEMP%\Apposto-UI-f55ad6afbb304224b65a2a95b00d8e4a\USB
+PIANO | Nuovo | Testi\prova.txt | selezionato=True
+2026-10-16T21:48:16.3500208+02:00 | Copia Testi\prova.txt | 16 / 16 byte
+2026-10-16T21:48:16.3560057+02:00 | OK Testi\prova.txt
+ESITO | Copiato | Testi\prova.txt | Copia verificata SHA-256
+FINE
