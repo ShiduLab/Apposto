@@ -4,6 +4,12 @@
 
 **ShiduLab SofficiWare**
 
+[Scarica la versione portatile](https://github.com/ShiduLab/Apposto/releases/latest) · [Guida e protezioni](LEGGIMI.md) · [Rapporti di prova](verifiche)
+
+![La postazione ShiduLab](assets/DeskSardTab.jpg)
+
+La foto della postazione ShiduLab accompagna Apposto anche nell'intestazione e nell'icona Windows, ricavata dalla stessa immagine in sette dimensioni.
+
 Hai una cartella sul PC. Sul disco esterno ne hai una copia. Nel frattempo hai scritto, corretto, aggiunto file in venti sottocartelle diverse.
 
 Apposto nasce per togliere di mezzo una domanda noiosa: quali file devo portare dall'altra parte?

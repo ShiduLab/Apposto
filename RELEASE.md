@@ -8,6 +8,7 @@ Prima versione desktop portatile di Apposto, ShiduLab SofficiWare.
 - Conflitti esclusi, storico delle versioni sostituite e verifica SHA-256.
 - Temporanei, rinomina finale, progresso, annullamento e log.
 - Interfaccia scura in italiano.
+- Foto della postazione ShiduLab nell'intestazione e icona Windows in sette dimensioni, incorporate nell'eseguibile.
 
 Verificati 30 casi del motore e il flusso dell'interfaccia fino alla seconda scansione dopo la copia. Eseguibile non firmato digitalmente. Cambio lettera su USB fisica, Windows 11 e filesystem esterni diversi non ancora collaudati.
 
