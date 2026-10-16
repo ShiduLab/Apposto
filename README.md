@@ -6,7 +6,11 @@
 
 **ShiduLab SofficiWare**
 
-[Scarica la versione portatile](https://github.com/ShiduLab/Apposto/releases/latest) · [Guida e protezioni](LEGGIMI.md) · [Rapporti di prova](verifiche)
+## [Scarica Apposto! (.exe)](https://github.com/ShiduLab/Apposto/releases/download/v0.1.0/Apposto.exe)
+
+Scarica **Apposto.exe** e aprilo. Il programma è portatile e non richiede installazione.
+
+[Guida e protezioni](LEGGIMI.md) · [Rapporti di prova](verifiche) · [Pacchetto completo con sorgenti e test (.zip)](https://github.com/ShiduLab/Apposto/releases/download/v0.1.0/Apposto.zip)
 
 ![Apposto!: esempio da Documenti a D:\Documenti](verifiche/Apposto-Documenti-titolo.png)
 
@@ -73,7 +77,7 @@ Il confronto rapido usa percorsi relativi, dimensioni e timestamp. La verifica a
 
 App desktop WinForms per Windows 10/11. Nessun browser necessario per usarla, nessun servizio, nessun account e nessuna installazione. Richiede .NET Framework 4.5 o successivo, normalmente già presente su Windows 10/11.
 
-Estrai l'intera cartella in una posizione scrivibile e avvia **Apposto.exe**. Coppie e log vengono conservati nella cartella `Dati` accanto all'app. Spostando tutta la cartella porti con te anche le impostazioni.
+Salva **Apposto.exe** in una cartella scrivibile e avvialo. Coppie e log vengono conservati nella cartella `Dati` accanto all'app. Spostando il programma insieme alla cartella `Dati` porti con te anche le impostazioni.
 
 Le coppie registrano l'identità del volume Windows. Quando richiami una coppia, Apposto può ritrovare lo stesso disco su un'altra lettera. Se il disco è assente o l'identità non coincide, l'app si ferma e lo segnala.
 
