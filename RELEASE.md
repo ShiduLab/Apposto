@@ -1,9 +1,9 @@
-# Apposto 0.1.0
+# Apposto! 0.1.0
 
 Prima versione desktop portatile di Apposto, ShiduLab SofficiWare.
 
 - Coppie di cartelle salvate e richiamabili.
-- Analisi ricorsiva e piano di copia gia selezionato.
+- Analisi ricorsiva e piano di copia già selezionato.
 - Copia solo origine > clone, senza cancellazioni nel clone.
 - Conflitti esclusi, storico delle versioni sostituite e verifica SHA-256.
 - Temporanei, rinomina finale, progresso, annullamento e log.

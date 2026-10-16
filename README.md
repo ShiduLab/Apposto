@@ -18,9 +18,9 @@ Hai una cartella sul PC. In un altro disco o in un'altra cartella ne hai una cop
 
 Apposto nasce per togliere di mezzo una domanda noiosa: quali file devo portare dall'altra parte?
 
-Gli indichi una volta l'origine e il clone. Lui percorre gli alberi, confronta i file e prepara tutti quelli da aggiungere o aggiornare, gia selezionati e con il percorso corretto. Tu guardi l'anteprima e premi **APPOSTO!**
+Gli indichi una volta l'origine e il clone. Lui percorre gli alberi, confronta i file e prepara tutti quelli da aggiungere o aggiornare, già selezionati e con il percorso corretto. Tu guardi l'anteprima e premi **APPOSTO!**
 
-La parte soffice e questa: meno caccia ai file, meno gesti ripetuti, piu attenzione a quello che stavi facendo.
+La parte soffice è questa: meno caccia ai file, meno gesti ripetuti, più attenzione a quello che stavi facendo.
 
 <details>
 <summary>La foto originale della postazione ShiduLab</summary>
@@ -32,7 +32,7 @@ La parte soffice e questa: meno caccia ai file, meno gesti ripetuti, piu attenzi
 ## Un compito preciso
 
 ```text
-PC / Testi                       USB / Testi
+Documenti                        D:\Documenti
   romanzo/capitolo-3.docx   >       romanzo/capitolo-3.docx
   appunti/idea.txt          >       appunti/idea.txt
   lavoro/bozza.md           >       lavoro/bozza.md
@@ -40,25 +40,25 @@ PC / Testi                       USB / Testi
 
 I file possono stare in sottocartelle diverse. Apposto ricostruisce la gerarchia senza appiattirla e conserva nomi e data di ultima modifica.
 
-Il flusso segue una direzione: **origine > clone**. I file presenti soltanto nel clone rimangono al loro posto. Se il clone contiene una versione diversa con data uguale o piu recente, Apposto la segnala come conflitto e la esclude dal piano.
+Il flusso segue una direzione: **origine > clone**. I file presenti soltanto nel clone rimangono al loro posto. Se il clone contiene una versione diversa con data uguale o più recente, Apposto la segnala come conflitto e la esclude dal piano.
 
 ## Prima guardi. Poi metti a posto.
 
 1. Premi Sfoglia...: si apre Questo PC, dove puoi scegliere un disco intero o una cartella per Origine e Destinazione. Salva la coppia con un nome.
-2. Analizza, oppure richiama una coppia gia salvata.
+2. Analizza, oppure richiama una coppia già salvata.
 3. Guarda nuovi, aggiornati, uguali, file solo destinazione, conflitti ed errori.
 4. Premi **APPOSTO!** per copiare tutti i file predisposti.
 
-La selezione automatica e il punto di partenza. Puoi togliere singoli file dal piano, ma non devi cercarli e aggiungerli a mano. I conflitti richiedono una valutazione separata: questa versione non offre un pulsante per sovrascriverli forzatamente.
+La selezione automatica è il punto di partenza. Puoi togliere singoli file dal piano, ma non devi cercarli e aggiungerli a mano. I conflitti richiedono una valutazione separata: questa versione non offre un pulsante per sovrascriverli forzatamente.
 
 ## La prudenza fa parte del prodotto
 
 | Situazione | Comportamento |
 | --- | --- |
-| File nuovo nell'origine | Gia selezionato per la copia |
-| Origine piu recente, contenuto diverso | Gia selezionato, con storico della versione sostituita |
+| File nuovo nell'origine | Già selezionato per la copia |
+| Origine più recente, contenuto diverso | Già selezionato, con storico della versione sostituita |
 | Contenuto identico, metadati diversi | Nessuna copia dopo verifica hash |
-| Clone diverso con data uguale o piu recente | Conflitto, escluso |
+| Clone diverso con data uguale o più recente | Conflitto, escluso |
 | File solo nel clone | Conservato |
 | File non leggibile | Segnalato, senza interrompere l'intera analisi |
 | Link o junction | Escluso, senza seguirlo |
@@ -71,36 +71,36 @@ Il confronto rapido usa percorsi relativi, dimensioni e timestamp. La verifica a
 
 ## Portatile, sul serio
 
-App desktop WinForms per Windows 10/11. Nessun browser necessario per usarla, nessun servizio, nessun account e nessuna installazione. Richiede .NET Framework 4.5 o successivo, normalmente gia presente su Windows 10/11.
+App desktop WinForms per Windows 10/11. Nessun browser necessario per usarla, nessun servizio, nessun account e nessuna installazione. Richiede .NET Framework 4.5 o successivo, normalmente già presente su Windows 10/11.
 
 Estrai l'intera cartella in una posizione scrivibile e avvia **Apposto.exe**. Coppie e log vengono conservati nella cartella `Dati` accanto all'app. Spostando tutta la cartella porti con te anche le impostazioni.
 
-Le coppie registrano l'identita del volume Windows. Quando richiami una coppia, Apposto puo ritrovare lo stesso disco su un'altra lettera. Se il disco e assente o l'identita non coincide, l'app si ferma e lo segnala.
+Le coppie registrano l'identità del volume Windows. Quando richiami una coppia, Apposto può ritrovare lo stesso disco su un'altra lettera. Se il disco è assente o l'identità non coincide, l'app si ferma e lo segnala.
 
 ## Prima versione funzionante: 0.1
 
-La prima consegna comprende eseguibile, sorgenti, procedura di compilazione, test e rapporti. Il motore e stato provato su fixture reali con file nuovi e modificati, sottocartelle, contenuti uguali, file solo destinazione, conflitti, file bloccati e junction. Sono stati verificati anche storico, timestamp, piano obsoleto e annullamento durante copia.
+La prima consegna comprende eseguibile, sorgenti, procedura di compilazione, test e rapporti. Il motore è stato provato su fixture reali con file nuovi e modificati, sottocartelle, contenuti uguali, file solo destinazione, conflitti, file bloccati e junction. Sono stati verificati anche storico, timestamp, piano obsoleto e annullamento durante copia.
 
 **30 verifiche del motore superate**, oltre al test del flusso asincrono dell'interfaccia: avvio, scansione, piano preselezionato, copia e seconda scansione senza altre copie da eseguire. Rapporti e schermata sono in [`verifiche`](verifiche).
 
-Compilazione e prove eseguite su Windows, build 19045. Windows 11, cambio lettera su USB fisica e comportamento sui diversi filesystem esterni richiedono ancora collaudo dedicato. Il recupero del volume e implementato, ma non viene presentato come gia provato su una periferica reale.
+Compilazione e prove eseguite su Windows, build 19045. Windows 11, cambio lettera su USB fisica e comportamento sui diversi filesystem esterni richiedono ancora collaudo dedicato. Il recupero del volume è implementato, ma non viene presentato come già provato su una periferica reale.
 
 ## Limiti dichiarati
 
-La versione 0.1 copia i dati principali dei file e il timestamp di ultima modifica. Non replica directory vuote, ACL, alternate data stream o tutte le proprieta NTFS. Lo storico cresce senza pulizia automatica. I percorsi `.apposto` sono riservati.
+La versione 0.1 copia i dati principali dei file e il timestamp di ultima modifica. Non replica directory vuote, ACL, alternate data stream o tutte le proprietà NTFS. Lo storico cresce senza pulizia automatica. I percorsi `.apposto` sono riservati.
 
-La modalita rapida presume uguaglianza se data e dimensione coincidono: per quei casi usa la verifica approfondita quando serve certezza sul contenuto. Una verifica hash gia avviata puo ritardare l'annullamento.
+La modalità rapida presume uguaglianza se data e dimensione coincidono: per quei casi usa la verifica approfondita quando serve certezza sul contenuto. Una verifica hash già avviata può ritardare l'annullamento.
 
 Apposto non usa snapshot VSS. Evita modifiche contemporanee agli alberi durante l'operazione. I controlli contro cambiamenti successivi all'anteprima riducono il rischio, senza garantire isolamento da altri processi o resistenza a guasti hardware e perdita di alimentazione. Dopo un arresto forzato possono restare temporanei separati dai file finali.
 
-L'eseguibile non e firmato digitalmente. Per dettagli su storico, ripristino, percorsi e dischi consulta [`LEGGIMI.md`](LEGGIMI.md).
+L'eseguibile non è firmato digitalmente. Per dettagli su storico, ripristino, percorsi e dischi consulta [`LEGGIMI.md`](LEGGIMI.md).
 
 ## Sorgenti essenziali
 
 | File | Compito |
 | --- | --- |
 | `src/Engine.cs` | Analisi, piano automatico e copia protetta |
-| `src/Profiles.cs` | Coppie persistenti e identita dei volumi |
+| `src/Profiles.cs` | Coppie persistenti e identità dei volumi |
 | `src/Program.cs` | Interfaccia italiana e operazioni in background |
 | `tests/Tests.cs` | Fixture e verifiche ripetibili |
 | `build.ps1` | Compilazione locale e test, senza download di dipendenze |
@@ -109,6 +109,6 @@ Per ricompilare su Windows esegui `build.ps1` dalla cartella del progetto. Usa i
 
 ---
 
-**Apposto. Un piccolo attrezzo per lasciare a posto una cosa concreta.**
+**Apposto! Un piccolo attrezzo per lasciare a posto una cosa concreta.**
 
 ShiduLab SofficiWare
